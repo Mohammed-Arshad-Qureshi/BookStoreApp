@@ -22,7 +22,7 @@ namespace RepositoryLayer.Services
                 msgObj.From = new MailAddress("testingEmailarshad@gmail.com");
                 msgObj.Subject = "Password Reset Link";
                 msgObj.Body = "<html><body><p><b>Hi" + " " + $"{name}" + " </b>,<br/>Please click the below link for reset password.<br/>" +
-                   $"www.BookStoreApp.com/reset-password/{token}" +
+                   $"www.BookStoreApplicationXYZ.com/reset-password/{token}" +
                    "<br/><br/><br/><b>Thanks&Regards </b><br/><b>Mail Team(donot - reply to this mail)</b></p></body></html>";
                 client.Send(msgObj);
             }

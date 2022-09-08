@@ -46,7 +46,7 @@ END CATCH
 Execute spAddUser 'Arshad Qureshi','arshad@gmail.com','Arshad@123','8758965847'
 
 
---sp call for login
+--sp call for User login
 CREATE PROCEDURE spLoginUser(
 @Email varchar(255),
 @Password varchar(50)
@@ -66,7 +66,7 @@ END CATCH
 
 
 
---SP Call for ForgetPassword
+--SP Call for User ForgetPassword
 CREATE PROCEDURE spUserForgetPassword(
 @Email varchar(255)
 )
@@ -82,6 +82,25 @@ SELECT
 	ERROR_LINE() AS ErrorLine,
 	ERROR_MESSAGE() AS ErrorMessage;
 END CATCH
+
+
+--SP Call for the User ResetPassword
+CREATE PROCEDURE spUserResetPassword(
+@Email varchar(255)
+)
+As
+Begin try
+select * from Users where Email=@Email
+end try
+Begin catch
+SELECT 
+	ERROR_NUMBER() AS ErrorNumber,
+	ERROR_STATE() AS ErrorState,
+	ERROR_PROCEDURE() AS ErrorProcedure,
+	ERROR_LINE() AS ErrorLine,
+	ERROR_MESSAGE() AS ErrorMessage;
+END CATCH
+
 
 
 

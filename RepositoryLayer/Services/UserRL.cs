@@ -239,6 +239,40 @@ namespace RepositoryLayer.Services
                 throw ex;
             }
         }
+
+        public bool ResetPassoword(string email, UserResetPasswordModel PasswordModel)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            var encryptPassword = EncryptPassword(PasswordModel.Password);
+            var encryptConfilremPassword = EncryptPassword(PasswordModel.ConfirmPassword);
+
+            var result = 0;
+
+            try
+            {
+                using (connection)
+                {
+                    connection.Open();
+                    SqlCommand com = new SqlCommand("spUserResetPassword", connection);
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.AddWithValue("@Email", email);
+                    com.Parameters.AddWithValue("@Password", encryptPassword);
+                    if (encryptPassword == encryptConfilremPassword)
+                    {
+                        result = com.ExecuteNonQuery();
+                    }
+
+                    if (result > 0)
+                        return true;
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public static string EncryptPassword(string Password)
         {
             try
@@ -284,5 +318,6 @@ namespace RepositoryLayer.Services
             }
         }
 
+       
     }
 }

@@ -1,8 +1,12 @@
 ﻿using BusinessLayer.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ModelLayer.UserModel;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 
 namespace BookStore.Controllers
 {
@@ -67,6 +71,30 @@ namespace BookStore.Controllers
                     return this.Ok(new { success = true, message = "Reset Password Link Send Successfully" });
                 }
                 return this.BadRequest(new { success = false, message = "Unable to send Reset Password Link" });
+            }
+
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        [Authorize]
+        [HttpPut("ResetPassword")]
+        public ActionResult ResetPassword(UserResetPasswordModel PasswordModel)
+        {
+            try
+            {
+                var identity = User.Identity as ClaimsIdentity;
+                IEnumerable<Claim> claims = identity.Claims;
+                var email = claims.Where(p => p.Type == @"Email").FirstOrDefault()?.Value;
+                bool result = this.userBL.ResetPassoword(email,PasswordModel);
+                if (result == true)
+                {
+                    return this.Ok(new { success = true, message = "Password Changed Successfully" });
+                }
+                return this.BadRequest(new { success = false, message = "Unable to Change Password" });
             }
 
             catch (Exception ex)
