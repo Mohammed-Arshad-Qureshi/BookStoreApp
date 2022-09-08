@@ -56,5 +56,25 @@ namespace BookStore.Controllers
             }
         }
 
+        [HttpPost("ForgetPassword/Email")]
+        public ActionResult ForgetPassword(string Email)
+        {
+            try
+            {
+                bool result = this.userBL.ForgetPasswordUser(Email);
+                if (result == true)
+                {
+                    return this.Ok(new { success = true, message = "Reset Password Link Send Successfully" });
+                }
+                return this.BadRequest(new { success = false, message = "Unable to send Reset Password Link" });
+            }
+
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
     }
 }

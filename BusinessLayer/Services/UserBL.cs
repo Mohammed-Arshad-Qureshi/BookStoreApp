@@ -27,7 +27,6 @@ namespace BusinessLayer.Services
                 throw ex;
             }
         }
-
         public string Login(UserLoginModel loginUser)
         {
             try
@@ -41,5 +40,19 @@ namespace BusinessLayer.Services
             }
 
         }
+        public bool ForgetPasswordUser(string email)
+        {
+            try
+            {
+                return this._userRL.ForgetPasswordUser(email);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
     }
 }
