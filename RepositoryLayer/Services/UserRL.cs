@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
 using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace RepositoryLayer.Services
 {
@@ -21,6 +24,7 @@ namespace RepositoryLayer.Services
         {
 
             SqlConnection connection = new SqlConnection(connectionString);
+            var encryptPassword = EncryptPassword(user.Password);
 
             try
             {
@@ -31,7 +35,6 @@ namespace RepositoryLayer.Services
                     com.CommandType = CommandType.StoredProcedure;
                     com.Parameters.AddWithValue("@FullName", user.FullName);
                     com.Parameters.AddWithValue("@Email", user.Email);
-                    var encryptPassword = EncryptPassword(user.Password);
                     com.Parameters.AddWithValue("@Password", encryptPassword);
                     com.Parameters.AddWithValue("@Phone", user.Mobile);
                     var result = com.ExecuteNonQuery();
@@ -87,6 +90,80 @@ namespace RepositoryLayer.Services
             catch (Exception ex)
             {
 
+                throw ex;
+            }
+        }
+
+        public string Login(UserLoginModel loginUser)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            var Password = EncryptPassword(loginUser.Password);
+
+            try
+            {
+                using (connection)
+                {
+                    connection.Open();
+                    int UserId = 0;
+                    SqlCommand com = new SqlCommand("spLoginUser", connection);
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.AddWithValue("@Email", loginUser.Email);
+                    com.Parameters.AddWithValue("@password", Password);
+                    SqlDataReader rd = com.ExecuteReader();
+                    UserPostModel response = new UserPostModel();
+
+                    if(rd.HasRows)
+                    {
+                        while (rd.Read())
+                        {
+                            UserId = rd["Id"] == DBNull.Value ? default : rd.GetInt32("Id");
+                            response.Email = rd["Email"] == DBNull.Value ? default : rd.GetString("Email");
+                            response.Password = rd["Password"] == DBNull.Value ? default : rd.GetString("Password");
+
+                        }
+                        return GenerateJWTToken(response.Email, UserId);
+                    }
+                   
+                    else
+                    {
+                        return null;
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private string GenerateJWTToken(string email, int userId)
+        {
+            try
+            {
+                // generate token
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var tokenKey = Encoding.ASCII.GetBytes("THIS_IS_MY_KEY_TO_GENERATE_TOKEN");
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                    new Claim("Email", email),
+                    new Claim("UserId",userId.ToString())
+                    }),
+                    Expires = DateTime.UtcNow.AddHours(2),
+
+                    SigningCredentials =
+                new SigningCredentials(
+                    new SymmetricSecurityKey(tokenKey),
+                    SecurityAlgorithms.HmacSha256Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                return tokenHandler.WriteToken(token);
+            }
+            catch (Exception ex)
+            {
                 throw ex;
             }
         }
