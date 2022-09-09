@@ -28,7 +28,7 @@ namespace BookStore.Controllers
                var result =  this.userBL.AddUser(model);
                 if (result != null)
                 {
-                    return this.Ok(new { success = true, message = "Registration Successfull" });
+                    return this.Ok(new { success = true, message = "USER REGISTRATION SUCCESSFULL" });
                 }
                 return this.BadRequest(new { success = false, message = "Email Already Exits" });
             }
@@ -48,9 +48,9 @@ namespace BookStore.Controllers
                 var result = this.userBL.Login(model);
                 if (result != null)
                 {
-                    return this.Ok(new { success = true, message = "Login Successfull" ,data=result});
+                    return this.Ok(new { success = true, message = "USER LOGIN SUCCESSFULL" ,data=result});
                 }
-                return this.BadRequest(new { success = false, message = "Login Failed" });
+                return this.BadRequest(new { success = false, message = "LOGIN FAILED!! Check your EmailId and Password and try again..." });
             }
 
             catch (Exception ex)

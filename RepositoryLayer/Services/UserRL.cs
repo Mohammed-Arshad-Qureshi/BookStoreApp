@@ -50,7 +50,7 @@ namespace RepositoryLayer.Services
                 throw ex;
             }
         }
-       
+
         public string Login(UserLoginModel loginUser)
         {
             SqlConnection connection = new SqlConnection(connectionString);
@@ -69,7 +69,7 @@ namespace RepositoryLayer.Services
                     SqlDataReader rd = com.ExecuteReader();
                     UserPostModel response = new UserPostModel();
 
-                    if(rd.HasRows)
+                    if (rd.HasRows)
                     {
                         while (rd.Read())
                         {
@@ -80,7 +80,7 @@ namespace RepositoryLayer.Services
                         }
                         return GenerateJWTToken(response.Email, UserId);
                     }
-                   
+
                     else
                     {
                         return null;
@@ -106,6 +106,7 @@ namespace RepositoryLayer.Services
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
+                    new Claim(ClaimTypes.Role, "User"),
                     new Claim("Email", email),
                     new Claim("UserId",userId.ToString())
                     }),
@@ -155,7 +156,7 @@ namespace RepositoryLayer.Services
                     {
                         return false;
                     }
-                   
+
                     MessageQueue messageQueue;
                     //ADD MESSAGE TO QUEUE
                     if (MessageQueue.Exists(@".\Private$\FundooQueue"))
@@ -318,6 +319,6 @@ namespace RepositoryLayer.Services
             }
         }
 
-       
+
     }
 }
