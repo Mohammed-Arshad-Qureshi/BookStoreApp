@@ -9,6 +9,7 @@ namespace BusinessLayer.Interfaces
     {
         public BookPostModel AddBook(BookPostModel bookPostModel);
         public List<BookResponseModel> GetAllBooks();
+        public BookResponseModel GetBook(int BookId);
 
     }
 }

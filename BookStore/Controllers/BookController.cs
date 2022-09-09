@@ -60,5 +60,25 @@ namespace BookStore.Controllers
             }
         }
 
+        [Authorize]
+        [HttpGet("GetAllBooks/BookId")]
+        public IActionResult GetAllBooks(int BookId)
+        {
+            try
+            {
+                var result = _bookBL.GetBook(BookId);
+                if (result == null)
+                {
+                    return this.BadRequest(new { success = false, Message = "No Books Available!!" });
+                }
+
+                return this.Ok(new { success = true, Message = "Books fetched Sucessfully...", data = result });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
