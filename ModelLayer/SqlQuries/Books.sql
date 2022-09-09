@@ -25,7 +25,8 @@ SELECT * FROM BooksTable
 ---------------------------------------------------------------
 ---SP for the Adding Book -------------------------------------
 
-CREATE PROCEDURE spAddBooks(
+
+CREATE PROCEDURE spAddBook(
 @BookName varchar(255),
 @Author varchar(255),
 @Description Nvarchar(255),
@@ -48,6 +49,9 @@ SELECT
 	ERROR_LINE() AS ErrorLine,
 	ERROR_MESSAGE() AS ErrorMessage;
 END CATCH
+
+
+EXEC spAddBook 'Quresiton are the Answers','Robert t','Every soluton raises another question',20,250,200,4.6,200,'http://image.jpg'
 
 ---------------------------------------------------------------
 --SP FOR GETIING ALL BOOKS ------------------------------------

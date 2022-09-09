@@ -1,10 +1,12 @@
-﻿using System;
+﻿using ModelLayer.BookModel;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace RepositoryLayer.Interfaces
 {
-    internal interface IBookRL
+    public interface IBookRL
     {
+        public BookPostModel AddBook(BookPostModel bookModel);
     }
 }

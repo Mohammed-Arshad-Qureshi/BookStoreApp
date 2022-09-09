@@ -40,10 +40,7 @@ namespace RepositoryLayer.Services
                     com.Parameters.AddWithValue("@Phone", user.Mobile);
                     var result = com.ExecuteNonQuery();
                     return result.ToString();
-
                 }
-
-
             }
             catch (Exception ex)
             {

@@ -14,10 +14,10 @@ namespace BookStore.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IUserBL userBL;
+        private readonly IUserBL _userBL;
         public UsersController(IUserBL userBL)
         {
-            this.userBL = userBL;
+            _userBL = userBL;
         }
 
         [HttpPost("Register")]
@@ -25,7 +25,7 @@ namespace BookStore.Controllers
         {
             try
             {
-               var result =  this.userBL.AddUser(model);
+               var result =  _userBL.AddUser(model);
                 if (result != null)
                 {
                     return this.Ok(new { success = true, message = "USER REGISTRATION SUCCESSFULL" });
@@ -45,7 +45,7 @@ namespace BookStore.Controllers
         {
             try
             {
-                var result = this.userBL.Login(model);
+                var result = _userBL.Login(model);
                 if (result != null)
                 {
                     return this.Ok(new { success = true, message = "USER LOGIN SUCCESSFULL" ,data=result});
@@ -65,7 +65,7 @@ namespace BookStore.Controllers
         {
             try
             {
-                bool result = this.userBL.ForgetPasswordUser(Email);
+                bool result = _userBL.ForgetPasswordUser(Email);
                 if (result == true)
                 {
                     return this.Ok(new { success = true, message = "Reset Password Link Send Successfully" });
@@ -89,7 +89,7 @@ namespace BookStore.Controllers
                 var identity = User.Identity as ClaimsIdentity;
                 IEnumerable<Claim> claims = identity.Claims;
                 var email = claims.Where(p => p.Type == @"Email").FirstOrDefault()?.Value;
-                bool result = this.userBL.ResetPassoword(email,PasswordModel);
+                bool result = _userBL.ResetPassoword(email,PasswordModel);
                 if (result == true)
                 {
                     return this.Ok(new { success = true, message = "Password Changed Successfully" });
