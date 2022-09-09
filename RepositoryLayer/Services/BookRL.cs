@@ -52,5 +52,48 @@ namespace RepositoryLayer.Services
                 throw ex;
             }
         }
+
+        public List<BookResponseModel> GetAllBooks()
+        {
+            List<BookResponseModel> Books = new List<BookResponseModel>();
+            SqlConnection sqlConnection = new SqlConnection(this.connectionString);
+            try
+            {
+                using (sqlConnection)
+                {
+                    sqlConnection.Open();
+                    SqlCommand cmd = new SqlCommand("spGetAllBooks", sqlConnection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            BookResponseModel book = new BookResponseModel();
+                            book.BookId = reader["BookId"] == DBNull.Value ? default : reader.GetInt32("BookId");
+                            book.BookName = reader["BookName"] == DBNull.Value ? default : reader.GetString("BookName");
+                            book.Author = reader["Author"] == DBNull.Value ? default : reader.GetString("Author");
+                            book.Description = reader["Description"] == DBNull.Value ? default : reader.GetString("Description");
+                            book.Quantity = reader["Quantity"] == DBNull.Value ? default : reader.GetInt32("Quantity");
+                            book.Price = reader["Price"] == DBNull.Value ? default : reader.GetDecimal("Price");
+                            book.DiscountPrice = reader["DiscountPrice"] == DBNull.Value ? default : reader.GetDecimal("DiscountPrice");
+                            book.TotalRating = reader["TotalRating"] == DBNull.Value ? default : reader.GetDouble("TotalRating");
+                            book.RatingCount = reader["RatingCount"] == DBNull.Value ? default : reader.GetInt32("RatingCount");
+                            book.BookImg = reader["BookImg"] == DBNull.Value ? default : reader.GetString("BookImg");
+                            Books.Add(book);
+                        }
+                    }
+                    return Books;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
     }
 }
