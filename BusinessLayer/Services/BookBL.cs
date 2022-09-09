@@ -53,5 +53,18 @@ namespace BusinessLayer.Services
                 throw ex;
             }
         }
+
+        public string UpdateBook(int BookId, BookPostModel bookModel)
+        {
+            try
+            {
+                return this._bookRL.UpdateBook(BookId,bookModel);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
     }
 }

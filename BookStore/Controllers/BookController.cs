@@ -61,9 +61,9 @@ namespace BookStore.Controllers
         }
 
         [Authorize]
-        [HttpGet("GetAllBooks/BookId")]
+        [HttpGet("GetAllBooks/{BookId}")]
         public IActionResult GetAllBooks(int BookId)
-        {
+          {
             try
             {
                 var result = _bookBL.GetBook(BookId);
@@ -73,6 +73,26 @@ namespace BookStore.Controllers
                 }
 
                 return this.Ok(new { success = true, Message = "Books fetched Sucessfully...", data = result });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [Authorize(Roles = Roles.Admin)]
+        [HttpPut("UpdateBooks")]
+        public IActionResult UpdateBooks(int BookId, BookPostModel bookPostModel)
+        {
+            try
+            {
+                var result = _bookBL.UpdateBook(BookId, bookPostModel);
+                if (result == null)
+                {
+                    return this.BadRequest(new { success = false, Message = "Book update Failed!!" });
+                }
+
+                return this.Ok(new { success = true, Message = "Book Updated Sucessfully...", data = result });
             }
             catch (Exception ex)
             {
