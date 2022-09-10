@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Interfaces;
 using ModelLayer.CartModel;
 using RepositoryLayer.Interfaces;
+using RepositoryLayer.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -46,6 +47,18 @@ namespace BusinessLayer.Services
             try
             {
                 return _cartRL.GetAllBooksInCartByCartId(UserId,CartId);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool UpdateCartItem(int UserId, CartUpdateModel cartUpdateModel)
+        {
+            try
+            {
+                return _cartRL.UpdateCartItem(UserId, cartUpdateModel);
             }
             catch (Exception ex)
             {

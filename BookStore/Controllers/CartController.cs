@@ -71,7 +71,7 @@ namespace BookStore.Controllers
 
         [HttpGet("GetAllBooksInCartByCardId/{CartId}")]
         public IActionResult GetAllBooksInCartByCartId(int CartId)
-        {
+         {
             try
             {
                 var identity = User.Identity as ClaimsIdentity;
@@ -93,6 +93,28 @@ namespace BookStore.Controllers
         }
 
 
+        [HttpPut("UpdateCartItem")]
+        public IActionResult UpdateCartItem(CartUpdateModel cartUpdateModel)
+        {
+            try
+            {
+                var identity = User.Identity as ClaimsIdentity;
+                IEnumerable<Claim> claims = identity.Claims;
+                var userId = claims.Where(p => p.Type == @"UserId").FirstOrDefault()?.Value;
+                int UserId = Convert.ToInt32(userId);
+                var result = _cartBL.UpdateCartItem(UserId, cartUpdateModel);
+                if (result == false)
+                {
+                    return this.BadRequest(new { success = false, Message = $"Update cart Failed!! Check if CartItem is availbale in Cart or not..." });
+                }
+
+                return this.Ok(new { success = true, Message = $"CartId : {cartUpdateModel.CartId} Updated In cart Sucessfully..." });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
     }
 }

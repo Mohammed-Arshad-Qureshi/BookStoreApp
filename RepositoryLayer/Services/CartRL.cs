@@ -131,5 +131,33 @@ namespace RepositoryLayer.Services
                 throw ex;
             }
         }
+
+        public bool UpdateCartItem(int UserId, CartUpdateModel cartUpdateModel)
+        {
+            SqlConnection Connection = new SqlConnection(connectionString);
+            try
+            {
+                using(Connection)
+                {
+                    Connection.Open();
+                    SqlCommand cmd = new SqlCommand("spUdateCartItems", Connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", UserId);
+                    cmd.Parameters.AddWithValue("@CartId", cartUpdateModel.CartId);
+                    cmd.Parameters.AddWithValue("@BookId", cartUpdateModel.BookId);
+                    cmd.Parameters.AddWithValue("@BookQuantity", cartUpdateModel.BookQuantity);
+                    var result = cmd.ExecuteNonQuery();
+                    if (result >= 0)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
