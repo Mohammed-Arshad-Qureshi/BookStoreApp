@@ -20,11 +20,23 @@ namespace BusinessLayer.Services
         {
             try
             {
-                return _cartRL.AddBookTOCart(UserId,postModel);
+                return _cartRL.AddBookTOCart(UserId, postModel);
             }
             catch (Exception ex)
             {
 
+                throw ex;
+            }
+        }
+
+        public List<CartResponseModel> GetAllBooksInCart(int UserId)
+        {
+            try
+            {
+                return _cartRL.GetAllBooksInCart(UserId);
+            }
+            catch (Exception ex)
+            {
                 throw ex;
             }
         }

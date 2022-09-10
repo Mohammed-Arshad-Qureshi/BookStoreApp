@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace BookStore.Controllers
 {
+    [Authorize(Roles = Roles.Users)]
     [Route("api/[controller]")]
     [ApiController]
     public class CartController : ControllerBase
@@ -22,7 +23,6 @@ namespace BookStore.Controllers
         }
 
 
-        [Authorize]
         [HttpPost("AddBookToCart")]
         public IActionResult AddBookTOCart(CartPostModel postModel)
         {
@@ -39,6 +39,29 @@ namespace BookStore.Controllers
                 }
 
                 return this.Ok(new { success = true, Message = $"BookId : {postModel.BookId} Added to cart Sucessfull..." });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet("GetAllBooksInCart")]
+        public IActionResult GetAllBooksInCart()
+        {
+            try
+            {
+                var identity = User.Identity as ClaimsIdentity;
+                IEnumerable<Claim> claims = identity.Claims;
+                var userId = claims.Where(p => p.Type == @"UserId").FirstOrDefault()?.Value;
+                int UserId = Convert.ToInt32(userId);
+                List<CartResponseModel> result = _cartBL.GetAllBooksInCart(UserId);
+                if (result == null)
+                {
+                    return this.BadRequest(new { success = false, Message = $"No Book available in cart!!" });
+                }
+
+                return this.Ok(new { success = true, Message = $"Books in Cart fetched Sucessfully...", data = result });
             }
             catch (Exception ex)
             {
