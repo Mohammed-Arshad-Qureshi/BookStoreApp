@@ -83,8 +83,10 @@ namespace RepositoryLayer.Services
                             book.BookImg = reader["BookImg"] == DBNull.Value ? default : reader.GetString("BookImg");
                             Books.Add(book);
                         }
+                        return Books;
                     }
-                    return Books;
+                    return null;
+                    
                 }
             }
             catch (Exception ex)
@@ -170,5 +172,32 @@ namespace RepositoryLayer.Services
                 throw ex;
             }
         }
+
+        public bool DeleteBook(int BookId)
+        {
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            try
+            {
+                using (sqlConnection)
+                {
+                    sqlConnection.Open();
+                    SqlCommand cmd = new SqlCommand("spDeleteBook", sqlConnection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@BookId ", BookId);
+                    var result = cmd.ExecuteNonQuery();
+                    if (result == 0)
+                    {
+                        return false;
+                    }
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
