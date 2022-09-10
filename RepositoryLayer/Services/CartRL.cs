@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
 using System.Text;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace RepositoryLayer.Services
 {
@@ -81,6 +82,48 @@ namespace RepositoryLayer.Services
                         return null;
                     }
 
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public CartResponseModel GetAllBooksInCartByCartId(int UserId, int CartId)
+        {
+            SqlConnection Connection = new SqlConnection(connectionString);
+            CartResponseModel book = new CartResponseModel();
+            try
+            {
+                using (Connection)
+                {
+                    Connection.Open();
+
+                    SqlCommand cmd = new SqlCommand("spGetCartItemByCartId", Connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", UserId);
+                    cmd.Parameters.AddWithValue("@CartId", CartId);
+
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            book.CartId = reader["CartId"] == DBNull.Value ? default : reader.GetInt32("CartId");
+                            book.UserId = UserId;
+                            book.BookId = reader["BookId"] == DBNull.Value ? default : reader.GetInt32("BookId");
+                            book.BookName = reader["BookName"] == DBNull.Value ? default : reader.GetString("BookName");
+                            book.Author = reader["Author"] == DBNull.Value ? default : reader.GetString("Author");
+                            book.BookQuantity = reader["BookQuantity"] == DBNull.Value ? default : reader.GetInt32("BookQuantity");
+                            book.Price = reader["Price"] == DBNull.Value ? default : reader.GetDecimal("Price");
+                            book.DiscountPrice = reader["DiscountPrice"] == DBNull.Value ? default : reader.GetDecimal("DiscountPrice");
+                            book.BookImg = reader["BookImg"] == DBNull.Value ? default : reader.GetString("BookImg");
+                        }
+                        return book;
+                    }
+                    return null;
                 }
             }
             catch (Exception ex)

@@ -69,6 +69,30 @@ namespace BookStore.Controllers
             }
         }
 
+        [HttpGet("GetAllBooksInCartByCardId/{CartId}")]
+        public IActionResult GetAllBooksInCartByCartId(int CartId)
+        {
+            try
+            {
+                var identity = User.Identity as ClaimsIdentity;
+                IEnumerable<Claim> claims = identity.Claims;
+                var userId = claims.Where(p => p.Type == @"UserId").FirstOrDefault()?.Value;
+                int UserId = Convert.ToInt32(userId);
+                CartResponseModel result = _cartBL.GetAllBooksInCartByCartId(UserId,CartId);
+                if (result == null)
+                {
+                    return this.BadRequest(new { success = false, Message = $"No Book available in cart!!" });
+                }
+
+                return this.Ok(new { success = true, Message = $"Books in Cart fetched Sucessfully...", data = result });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
 
     }
 }
