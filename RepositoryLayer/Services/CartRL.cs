@@ -35,10 +35,7 @@ namespace RepositoryLayer.Services
                     {
                         return true;
                     }
-                    else
-                    {
-                        return false;
-                    }
+                    return false;
                 }
             }
             catch (Exception ex)
