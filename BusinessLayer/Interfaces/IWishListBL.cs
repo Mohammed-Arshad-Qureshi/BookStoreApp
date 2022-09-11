@@ -8,5 +8,6 @@ namespace BusinessLayer.Interfaces
     public interface IWishListBL
     {
         public bool AddToWishList(int UserId, int BookId);
+        public List<WishListResponseModel> GetAllWishList(int UserId);
     }
 }

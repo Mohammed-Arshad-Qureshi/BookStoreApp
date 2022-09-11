@@ -4,6 +4,7 @@ using RepositoryLayer.Interfaces;
 using RepositoryLayer.Services;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 
 namespace BusinessLayer.Services
@@ -22,6 +23,19 @@ namespace BusinessLayer.Services
             try
             {
                 return _wishListRL.AddToWishList(UserId,BookId);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public List<WishListResponseModel> GetAllWishList(int UserId)
+        {
+            try
+            {
+                return _wishListRL.GetAllWishList(UserId);
             }
             catch (Exception ex)
             {

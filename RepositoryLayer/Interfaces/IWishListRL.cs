@@ -8,5 +8,6 @@ namespace RepositoryLayer.Interfaces
     public interface IWishListRL
     {
         public bool AddToWishList(int UserId, int BookId);
+        public List<WishListResponseModel> GetAllWishList(int UserId);
     }
 }

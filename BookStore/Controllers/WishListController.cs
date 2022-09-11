@@ -46,5 +46,29 @@ namespace BookStore.Controllers
             }
         }
 
+        [HttpGet("GetAllWishList")]
+        public IActionResult GetAllWishList()
+        {
+            try
+            {
+                var identity = User.Identity as ClaimsIdentity;
+                IEnumerable<Claim> claims = identity.Claims;
+                var userId = claims.Where(p => p.Type == @"UserId").FirstOrDefault()?.Value;
+                int UserId = Convert.ToInt32(userId);
+                var result = _wishListBL.GetAllWishList(UserId);
+                if (result == null)
+                {
+                    return this.BadRequest(new { success = false, Message = $"No Book available in WishList!!" });
+                }
+
+                return this.Ok(new { success = true, Message = $"Books in WishList fetched Sucessfully...", data = result });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
     }
 }
