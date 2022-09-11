@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RepositoryLayer.Interfaces
+namespace BusinessLayer.Interfaces
 {
-    public interface IWishListRL
+    public interface IWishListBL
     {
         public bool AddToWishList(int UserId, int BookId);
     }
