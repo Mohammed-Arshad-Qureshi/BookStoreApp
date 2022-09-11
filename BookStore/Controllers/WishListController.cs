@@ -69,6 +69,29 @@ namespace BookStore.Controllers
             }
         }
 
+        [HttpDelete("DeleteBookFromWishList/{WishListId}")]
+        public IActionResult DeleteBookFromWishList(int WishListId)
+        {
+            try
+            {
+                var identity = User.Identity as ClaimsIdentity;
+                IEnumerable<Claim> claims = identity.Claims;
+                var userId = claims.Where(p => p.Type == @"UserId").FirstOrDefault()?.Value;
+                int UserId = Convert.ToInt32(userId);
+                var result = _wishListBL.DeleteWishListItem(UserId, WishListId);
+                if (result == false)
+                {
+                    return this.BadRequest(new { success = false, Message = "Something went wrong while removing Book from the WishList!!" });
+                }
+
+                return this.Ok(new { success = true, Message = $"Book removed from WishList Sucessfully..." });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
 
     }
 }

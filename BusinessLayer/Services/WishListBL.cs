@@ -43,5 +43,18 @@ namespace BusinessLayer.Services
                 throw ex;
             }
         }
+
+        public bool DeleteWishListItem(int UserId, int WishListId)
+        {
+            try
+            {
+                return _wishListRL.DeleteWishListItem(UserId,WishListId);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
     }
 }

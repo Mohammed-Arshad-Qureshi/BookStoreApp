@@ -9,5 +9,7 @@ namespace BusinessLayer.Interfaces
     {
         public bool AddToWishList(int UserId, int BookId);
         public List<WishListResponseModel> GetAllWishList(int UserId);
+        public bool DeleteWishListItem(int UserId, int WishListId);
+
     }
 }

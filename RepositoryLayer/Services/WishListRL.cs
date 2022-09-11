@@ -81,5 +81,29 @@ namespace RepositoryLayer.Services
                 throw ex;
             }
         }
+
+        public bool DeleteWishListItem(int UserId, int WishListId)
+        {
+            SqlConnection sqlConnection = new SqlConnection(this.connectionString);
+            try
+            {
+                using (sqlConnection)
+                {
+                    sqlConnection.Open();
+                    SqlCommand cmd = new SqlCommand("spDeleteBookFromWishList", sqlConnection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@WishListId ", WishListId);
+                    cmd.Parameters.AddWithValue("@UserId ", UserId);
+                    var result = cmd.ExecuteNonQuery();
+                    if (result > 0)
+                        return true;
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
