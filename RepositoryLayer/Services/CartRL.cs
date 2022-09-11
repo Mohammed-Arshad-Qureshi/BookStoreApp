@@ -147,7 +147,34 @@ namespace RepositoryLayer.Services
                     cmd.Parameters.AddWithValue("@BookId", cartUpdateModel.BookId);
                     cmd.Parameters.AddWithValue("@BookQuantity", cartUpdateModel.BookQuantity);
                     var result = cmd.ExecuteNonQuery();
-                    if (result >= 0)
+                    if (result > 0)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        public bool DeleteCartbyCartId(int UserId, int CartId)
+        {
+            SqlConnection Connection = new SqlConnection(connectionString);
+            try
+            {
+                using (Connection)
+                {
+                    Connection.Open();
+                    SqlCommand cmd = new SqlCommand("spDeleteCartItems", Connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", UserId);
+                    cmd.Parameters.AddWithValue("@CartId", CartId);
+                    var result = cmd.ExecuteNonQuery();
+                    if (result > 0)
                     {
                         return true;
                     }

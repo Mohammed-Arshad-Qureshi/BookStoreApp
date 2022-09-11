@@ -116,5 +116,29 @@ namespace BookStore.Controllers
             }
         }
 
+        [HttpDelete("DeleteCart/{CartId}")]
+        public IActionResult DeleteCart(int CartId)
+        {
+            try
+            {
+                var identity = User.Identity as ClaimsIdentity;
+                IEnumerable<Claim> claims = identity.Claims;
+                var userId = claims.Where(p => p.Type == @"UserId").FirstOrDefault()?.Value;
+                int UserId = Convert.ToInt32(userId);
+                var result = _cartBL.DeleteCartbyCartId(UserId, CartId);
+                if (result == false)
+                {
+                    return this.BadRequest(new { success = false, Message = $"Something went wrong while removing CartItemId : {CartId} from the cart!!" });
+                }
+
+                return this.Ok(new { success = true, Message = $"CartItemId : {CartId} removed from cart Sucessfully..." });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
+  
