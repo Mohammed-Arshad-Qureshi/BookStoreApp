@@ -9,6 +9,6 @@ namespace BusinessLayer.Interfaces
     {
         public bool AddFeedback(int UserId, FeedBackPostModel postModel);
         public List<FeedBackResponseModel> GetAllFeedbacksByBookId(int BookId);
-
+        public bool DeleteFeedbackById(int FeedBackId);
     }
 }

@@ -10,7 +10,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace RepositoryLayer.Services
 {
-    public class FeedBackRL:IFeedBackRL
+    public class FeedBackRL : IFeedBackRL
     {
         private readonly string connectionString;
         public FeedBackRL(IConfiguration configuartion)
@@ -88,5 +88,34 @@ namespace RepositoryLayer.Services
                 throw ex;
             }
         }
+
+
+        public bool DeleteFeedbackById(int FeedBackId)
+        {
+
+            SqlConnection Connection = new SqlConnection(connectionString);
+            try
+            {
+                using (Connection)
+                {
+                    Connection.Open();
+                    SqlCommand cmd = new SqlCommand("spDeleteFeedBackById", Connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@FeedbackId ", FeedBackId);
+
+                    var result = cmd.ExecuteNonQuery();
+                    if (result < 0)
+                    {
+                        return false;
+                    }
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

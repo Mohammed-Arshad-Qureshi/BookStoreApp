@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System;
 using System.Linq;
 using ModelLayer.FeedBack;
+using System.Data;
 
 namespace BookStore.Controllers
 {
@@ -58,6 +59,28 @@ namespace BookStore.Controllers
                 }
 
                 return this.Ok(new { success = true, Message = $"All Feedbacks fetched for BookId : {BookId} Sucessfully...", data = result });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [Authorize(Roles = Roles.Admin)]
+        [Authorize(Roles = Roles.Admin)]
+        [Authorize(Roles = Roles.Admin)]
+        [HttpDelete("DeleteFeedback/{FeedbackId}")]
+        public IActionResult DeleteFeedbackById(int FeedbackId)
+        {
+            try
+            {
+                var result = _feedBackBL.DeleteFeedbackById(FeedbackId);
+                if (result == false)
+                {
+                    return this.BadRequest(new { success = false, Message = $"Something went wrong while removing FeedbackId : {FeedbackId} from the Feedback List!!" });
+                }
+
+                return this.Ok(new { success = true, Message = $"FeedbackId : {FeedbackId} removed from Feedback List Sucessfully..." });
             }
             catch (Exception ex)
             {

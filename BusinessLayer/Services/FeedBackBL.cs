@@ -4,6 +4,7 @@ using RepositoryLayer.Interfaces;
 using RepositoryLayer.Services;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 
 namespace BusinessLayer.Services
@@ -34,6 +35,18 @@ namespace BusinessLayer.Services
             try
             {
                 return _feedBackRL.GetAllFeedbacksByBookId(BookId);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool DeleteFeedbackById(int FeedBackId)
+        {
+            try
+            {
+                return _feedBackRL.DeleteFeedbackById(FeedBackId);
             }
             catch (Exception ex)
             {
