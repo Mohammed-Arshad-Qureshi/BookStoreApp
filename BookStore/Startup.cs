@@ -75,6 +75,18 @@ namespace BookStore
                     ValidAudience = "localhost"
                 };
             });
+
+            services.AddCors(options =>
+            {
+
+                options.AddPolicy(
+                name: "AllowOrigin",
+                builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+            });
+
             services.AddTransient<IUserBL, UserBL>();
             services.AddTransient<IUserRL, UserRL>();
             services.AddTransient<IAdminRL, AdminRL>();
@@ -108,6 +120,7 @@ namespace BookStore
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors("AllowOrigin");
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseSwagger();
