@@ -8,5 +8,6 @@ namespace BusinessLayer.Interfaces
     public interface IOrderBL
     {
         public bool AddOrder(OrderPostModel orderModel);
+        public List<OrderResponseModel> GetAllOrders(int UserId);
     }
 }

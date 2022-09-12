@@ -4,7 +4,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ModelLayer.OrderModel;
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using System.Security.Claims;
 
 namespace BookStore.Controllers
 {
@@ -38,6 +41,28 @@ namespace BookStore.Controllers
                 throw ex;
             }
         }
-    }
 
+        [HttpGet("GetAllOrders")]
+        public IActionResult GetAllOrders()
+        {
+            try
+            {
+                var identity = User.Identity as ClaimsIdentity;
+                IEnumerable<Claim> claims = identity.Claims;
+                var userId = claims.Where(p => p.Type == @"UserId").FirstOrDefault()?.Value;
+                int UserId = Convert.ToInt32(userId);
+                List<OrderResponseModel> result = _orderBL.GetAllOrders(UserId);
+                if (result.Count == 0)
+                {
+                    return this.BadRequest(new { success = false, Message = $"No Addresses available For UserId : {UserId}!!" });
+                }
+
+                return this.Ok(new { success = true, Message = $"Order List of UserId : {UserId} fetched Sucessfully...", data = result });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+    }
 }
