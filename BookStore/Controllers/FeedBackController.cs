@@ -44,5 +44,25 @@ namespace BookStore.Controllers
                 throw ex;
             }
         }
+
+        [Authorize]
+        [HttpGet("GetAllFeedbacks/{BookId}")]
+        public IActionResult GetAllFeddbacksByBookId(int BookId)
+        {
+            try
+            {
+                List<FeedBackResponseModel> result = _feedBackBL.GetAllFeedbacksByBookId(BookId);
+                if (result.Count == 0)
+                {
+                    return this.BadRequest(new { success = false, Message = $"No Feedbacks available for BookId:{BookId} !!" });
+                }
+
+                return this.Ok(new { success = true, Message = $"All Feedbacks fetched for BookId : {BookId} Sucessfully...", data = result });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

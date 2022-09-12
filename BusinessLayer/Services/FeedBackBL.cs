@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Interfaces;
 using ModelLayer.FeedBack;
 using RepositoryLayer.Interfaces;
+using RepositoryLayer.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,6 +22,18 @@ namespace BusinessLayer.Services
             try
             {
                 return _feedBackRL.AddFeedback(UserId, feedbackModel);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<FeedBackResponseModel> GetAllFeedbacksByBookId(int BookId)
+        {
+            try
+            {
+                return _feedBackRL.GetAllFeedbacksByBookId(BookId);
             }
             catch (Exception ex)
             {

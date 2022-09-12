@@ -8,5 +8,7 @@ namespace BusinessLayer.Interfaces
     public interface IFeedBackBL
     {
         public bool AddFeedback(int UserId, FeedBackPostModel postModel);
+        public List<FeedBackResponseModel> GetAllFeedbacksByBookId(int BookId);
+
     }
 }

@@ -52,8 +52,7 @@ select * from BooksTable
 -------------------------------------------------
 ------------SP FOR GET FEEDBACK BY ID -----------
 
-
-CREATE PROCEDURE spAddFeedBackById(
+CREATE PROCEDURE spGetFeedBackById(
 @BookId int
 )
 As
@@ -69,7 +68,6 @@ SELECT
 	ERROR_LINE() AS ErrorLine,
 	ERROR_MESSAGE() AS ErrorMessage;
 END CATCH
-
 
 
 

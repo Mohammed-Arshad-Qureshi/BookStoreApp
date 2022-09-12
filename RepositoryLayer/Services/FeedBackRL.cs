@@ -47,5 +47,46 @@ namespace RepositoryLayer.Services
                 throw ex;
             }
         }
+
+        public List<FeedBackResponseModel> GetAllFeedbacksByBookId(int BookId)
+        {
+            List<FeedBackResponseModel> Feedbacks = new List<FeedBackResponseModel>();
+            SqlConnection Connection = new SqlConnection(connectionString);
+            try
+            {
+                using (Connection)
+                {
+                    Connection.Open();
+                    SqlCommand cmd = new SqlCommand("spGetFeedBackById", Connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@BookId", BookId);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+
+
+                        while (reader.Read())
+                        {
+                            FeedBackResponseModel Feedbackdetails = new FeedBackResponseModel();
+                            Feedbackdetails.FeedbackId = reader["FeedbackId"] == DBNull.Value ? default : reader.GetInt32("FeedbackId");
+                            Feedbackdetails.UserId = reader["UserId"] == DBNull.Value ? default : reader.GetInt32("UserId");
+                            Feedbackdetails.BookId = reader["BookId"] == DBNull.Value ? default : reader.GetInt32("BookId");
+                            Feedbackdetails.Rating = reader["Rating"] == DBNull.Value ? default : reader.GetDouble("Rating");
+                            Feedbackdetails.Comment = reader["Comment"] == DBNull.Value ? default : reader.GetString("Comment");
+                            Feedbackdetails.FullName = reader["FullName"] == DBNull.Value ? default : reader.GetString("FullName");
+                            Feedbacks.Add(Feedbackdetails);
+                        }
+
+                        return Feedbacks;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
