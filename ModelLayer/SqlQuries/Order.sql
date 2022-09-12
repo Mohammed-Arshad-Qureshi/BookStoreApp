@@ -68,11 +68,28 @@ SELECT
 	ERROR_MESSAGE() AS ErrorMessage;
 END CATCH
 
+--------------------------------------------------------------
+------------SP Call for get Orders-------------------------
+
+CREATE PROCEDURE spGetAllOrders(
+@UserId int
+)
+As
+Begin try
+select 
+o.OrderId,o.UserId,o.BookId,o.AddressId,o.OrderQuantity,o.TotalOrderPrice,o.OrderDate,b.BookName,b.Author,b.BookImg
+from OrdersTable o INNER JOIN BooksTable b ON o.BookId = b.BookId where UserId = @UserId
+end try
+Begin catch
+SELECT 
+	ERROR_NUMBER() AS ErrorNumber,
+	ERROR_STATE() AS ErrorState,
+	ERROR_PROCEDURE() AS ErrorProcedure,
+	ERROR_LINE() AS ErrorLine,
+	ERROR_MESSAGE() AS ErrorMessage;
+END CATCH
+
+
+---------------------------------------
+spGetAllOrders 1
 select * from Carttable
-
-
-Select c.CartId,c.UserId,c.BookId,b.Quantity,b.DiscountPrice,c.BookQuantity into tempdetails from CartTable c Inner join BooksTable b on c.BookId = b.BookId where CartId = 1
-select * from tempdetails
-drop table tempdetails
-
-DECLARE @BookPresentInWishList int =(select Count(WishListId) from WishListTable where BookId= @BookId)	
