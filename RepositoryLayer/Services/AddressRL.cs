@@ -45,5 +45,48 @@ namespace RepositoryLayer.Services
                 throw ex;
             }
         }
+
+        public List<AddressResponseModel> GetAllAddresses(int UserId)
+        {
+            List<AddressResponseModel> Addresses = new List<AddressResponseModel>();
+            SqlConnection Connection = new SqlConnection(connectionString);
+            try
+            {
+                using (Connection)
+                {
+                    Connection.Open();
+                    SqlCommand cmd = new SqlCommand("spForGetAllAddress", Connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", UserId);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            AddressResponseModel addressdetails = new AddressResponseModel();
+                            addressdetails.AddressId = reader["AddressId"] == DBNull.Value ? default : reader.GetInt32("AddressId");
+                            addressdetails.UserId = UserId;
+                            addressdetails.FullName = reader["FullName"] == DBNull.Value ? default : reader.GetString("FullName");
+                            string phone = reader["Phone"] == DBNull.Value ? default : reader.GetString("Phone");
+                            addressdetails.MobileNo = Convert.ToInt64(phone);
+                            addressdetails.AddressType = reader["AddressType"] == DBNull.Value ? default : reader.GetInt32("AddressType");
+                            addressdetails.FullAddress = reader["FullAddress"] == DBNull.Value ? default : reader.GetString("FullAddress");
+                            addressdetails.City = reader["City"] == DBNull.Value ? default : reader.GetString("City");
+                            addressdetails.State = reader["State"] == DBNull.Value ? default : reader.GetString("State");
+                            Addresses.Add(addressdetails);
+                        }
+
+                        return Addresses;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
+

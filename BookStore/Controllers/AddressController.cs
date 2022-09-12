@@ -43,5 +43,28 @@ namespace BookStore.Controllers
                 throw ex;
             }
         }
+
+        [HttpGet("GetAllAddress")]
+        public IActionResult GetAllAddress()
+        {
+            try
+            {
+                var identity = User.Identity as ClaimsIdentity;
+                IEnumerable<Claim> claims = identity.Claims;
+                var userId = claims.Where(p => p.Type == @"UserId").FirstOrDefault()?.Value;
+                int UserId = Convert.ToInt32(userId);
+                var result = _addressBL.GetAllAddresses(UserId);
+                if (result == null)
+                {
+                    return this.BadRequest(new { success = false, Message = $"No Addresses available For UserId : {UserId}!!" });
+                }
+
+                return this.Ok(new { success = true, Message = $"Addresses List of UserId : {UserId} fetched Sucessfully...", data = result });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

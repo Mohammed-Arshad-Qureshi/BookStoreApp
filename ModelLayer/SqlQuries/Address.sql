@@ -24,7 +24,7 @@ Insert INTO AddressTypeTable values ('Home'),('Office'),('Other')
 
 --Displaying the table
 select * from AddressTypeTable
-
+select * from AddressTable
 
 
 -------------------------------------------------------------
@@ -91,6 +91,7 @@ SELECT
 	ERROR_MESSAGE() AS ErrorMessage;
 END CATCH
 
+EXEC spForGetAllAddress 1
 
 
 
