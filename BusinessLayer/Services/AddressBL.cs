@@ -54,5 +54,20 @@ namespace BusinessLayer.Services
                 throw ex;
             }
         }
+
+
+        public bool DeleteAddressByAddressId(int AddressId, int UserId)
+        {
+            try
+            {
+                return _addressRL.DeleteAddressByAddressId(UserId, UserId);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
     }
 }

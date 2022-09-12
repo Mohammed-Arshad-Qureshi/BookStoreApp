@@ -90,5 +90,28 @@ namespace BookStore.Controllers
             }
         }
 
+        [HttpDelete("DeleteAddress/{AddressId}")]
+        public IActionResult DeleteAddressByAddressId(int AddressId)
+        {
+            try
+            {
+                var identity = User.Identity as ClaimsIdentity;
+                IEnumerable<Claim> claims = identity.Claims;
+                var userId = claims.Where(p => p.Type == @"UserId").FirstOrDefault()?.Value;
+                int UserId = Convert.ToInt32(userId);
+                var result = _addressBL.DeleteAddressByAddressId(AddressId, UserId);
+                if (result == false)
+                {
+                    return this.BadRequest(new { success = false, Message = "Something went wrong while deleting Address}!!" });
+                }
+
+                return this.Ok(new { success = true, Message = "Address Deleted Sucessfully..." });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

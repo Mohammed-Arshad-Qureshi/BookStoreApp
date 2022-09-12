@@ -120,9 +120,32 @@ namespace RepositoryLayer.Services
             {
                 throw ex;
             }
-            finally
+        }
+
+        public bool DeleteAddressByAddressId(int AddressId, int UserId)
+        {
+            SqlConnection Connection = new SqlConnection(connectionString);
+            try
             {
-                sqlconnection.Close();
+                using (Connection)
+                {
+                    Connection.Open();
+                    SqlCommand cmd = new SqlCommand("spForDeleteAddressById", Connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@AddressId ", AddressId);
+                    cmd.Parameters.AddWithValue("@UserId ", UserId);
+                    var result = cmd.ExecuteNonQuery();
+                    if (result == 0)
+                    {
+                        return false;
+                    }
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
     }
