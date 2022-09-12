@@ -87,6 +87,44 @@ namespace RepositoryLayer.Services
                 throw ex;
             }
         }
+
+        public bool UpdateAddressbyId(int UserId, AddressUpdateModel postModel)
+        {
+            SqlConnection sqlconnection = new SqlConnection(this.connectionString);
+            try
+            {
+                {
+                    sqlconnection.Open();
+
+                    SqlCommand cmd = new SqlCommand("SpUpdateAddress", sqlconnection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", UserId);
+                    cmd.Parameters.AddWithValue("@AddressId", postModel.AddressId);
+                    cmd.Parameters.AddWithValue("@AddressType", postModel.AddressType);
+                    cmd.Parameters.AddWithValue("@FullAddress", postModel.FullAddress);
+                    cmd.Parameters.AddWithValue("@City", postModel.City);
+                    cmd.Parameters.AddWithValue("@State", postModel.State);
+
+                    var result = cmd.ExecuteNonQuery();
+                    if (result > 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                sqlconnection.Close();
+            }
+        }
     }
 }
 

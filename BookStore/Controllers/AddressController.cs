@@ -66,5 +66,29 @@ namespace BookStore.Controllers
                 throw ex;
             }
         }
+
+        [HttpPut("UpdateAddress")]
+        public IActionResult UpdateAddressbyId(AddressUpdateModel postModel)
+        {
+            try
+            {
+                var identity = User.Identity as ClaimsIdentity;
+                IEnumerable<Claim> claims = identity.Claims;
+                var userId = claims.Where(p => p.Type == @"UserId").FirstOrDefault()?.Value;
+                int UserId = Convert.ToInt32(userId);
+                var result = _addressBL.UpdateAddressbyId(UserId, postModel);
+                if (result == false)
+                {
+                    return this.BadRequest(new { success = false, Message = $"Update Address Failed!! Check if Address is already availbale..." });
+                }
+
+                return this.Ok(new { success = true, Message = $"AddressId : {postModel.AddressId} Updated Sucessfully..." });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
