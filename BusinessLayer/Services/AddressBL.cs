@@ -69,5 +69,18 @@ namespace BusinessLayer.Services
             }
         }
 
+        public AddressResponseModel GetAllAddressById(int UserId, int AddressId)
+        {
+            try
+            {
+                return _addressRL.GetAllAddressById(UserId,AddressId);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
     }
 }

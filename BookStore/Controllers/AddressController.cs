@@ -113,5 +113,27 @@ namespace BookStore.Controllers
             }
         }
 
+        [HttpGet("GetAllAddressById/{AddressId}")]
+        public IActionResult GetAllAddress(int AddressId)
+        {
+            try
+            {
+                var identity = User.Identity as ClaimsIdentity;
+                IEnumerable<Claim> claims = identity.Claims;
+                var userId = claims.Where(p => p.Type == @"UserId").FirstOrDefault()?.Value;
+                int UserId = Convert.ToInt32(userId);
+                var result = _addressBL.GetAllAddressById(UserId,AddressId);
+                if (result == null)
+                {
+                    return this.BadRequest(new { success = false, Message = $"No Address Found !!" });
+                }
+
+                return this.Ok(new { success = true, Message = $"Address fetched Sucessfully...", data = result });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

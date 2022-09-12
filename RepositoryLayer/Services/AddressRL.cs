@@ -148,6 +148,47 @@ namespace RepositoryLayer.Services
                 throw ex;
             }
         }
+
+        public AddressResponseModel GetAllAddressById(int UserId, int AddressId)
+        {
+            SqlConnection Connection = new SqlConnection(connectionString);
+            try
+            {
+                using (Connection)
+                {
+                    Connection.Open();
+                    SqlCommand cmd = new SqlCommand("spForGetAddressById", Connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", UserId);
+                    cmd.Parameters.AddWithValue("@AddressId", AddressId);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    AddressResponseModel addressdetails = new AddressResponseModel();
+                    if (reader.HasRows)
+                    {
+                        if (reader.Read())
+                        {
+                            addressdetails.AddressId = reader["AddressId"] == DBNull.Value ? default : reader.GetInt32("AddressId");
+                            addressdetails.UserId = UserId;
+                            addressdetails.FullName = reader["FullName"] == DBNull.Value ? default : reader.GetString("FullName");
+                            string phone = reader["Phone"] == DBNull.Value ? default : reader.GetString("Phone");
+                            addressdetails.MobileNo = Convert.ToInt64(phone);
+                            addressdetails.AddressType = reader["AddressType"] == DBNull.Value ? default : reader.GetInt32("AddressType");
+                            addressdetails.FullAddress = reader["FullAddress"] == DBNull.Value ? default : reader.GetString("FullAddress");
+                            addressdetails.City = reader["City"] == DBNull.Value ? default : reader.GetString("City");
+                            addressdetails.State = reader["State"] == DBNull.Value ? default : reader.GetString("State");
+                        }
+                        return addressdetails;
+                    }
+                    return null;
+                   
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
 
