@@ -9,5 +9,6 @@ namespace BusinessLayer.Interfaces
     {
         public bool AddOrder(OrderPostModel orderModel);
         public List<OrderResponseModel> GetAllOrders(int UserId);
+        public bool DeleteOrder(int UserId, int OrderId);
     }
 }

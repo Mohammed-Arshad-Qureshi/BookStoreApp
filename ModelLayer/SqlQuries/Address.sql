@@ -121,7 +121,6 @@ END CATCH
 
 ----------------------------------------------------------------
 ------------SP Call for Update Address --------------------------
-
 CREATE PROCEDURE SpUpdateAddress(
 @AddressId int,
 @UserId int,

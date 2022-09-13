@@ -45,7 +45,7 @@ SELECT
 	ERROR_MESSAGE() AS ErrorMessage;
 END CATCH
 
- EXEC spAddBookToCart 1,2,10
+ EXEC spAddBookToCart 1,2,5
 
 
 

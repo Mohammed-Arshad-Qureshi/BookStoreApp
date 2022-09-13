@@ -75,7 +75,7 @@ END CATCH
 -----------------------------------------------------------------
 --------------SP FOR DELETE WISHLIST ---------------------------
 
-create procedure DeleteWishListItemSP(
+create procedure spDeleteBookFromWishList(
 @WishListId int,
 @UserId int
 )
@@ -91,3 +91,6 @@ SELECT
 	ERROR_LINE() AS ErrorLine,
 	ERROR_MESSAGE() AS ErrorMessage;
 END CATCH
+
+
+select * from WishListTable

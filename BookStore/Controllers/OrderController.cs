@@ -64,5 +64,29 @@ namespace BookStore.Controllers
                 throw ex;
             }
         }
+
+        [HttpDelete("DeleteOrder/{OrderId}")]
+        public IActionResult DeleteOrder(int OrderId)
+        {
+            try
+            {
+                var identity = User.Identity as ClaimsIdentity;
+                IEnumerable<Claim> claims = identity.Claims;
+                var userId = claims.Where(p => p.Type == @"UserId").FirstOrDefault()?.Value;
+                int UserId = Convert.ToInt32(userId);
+                bool result = _orderBL.DeleteOrder(UserId,OrderId);
+                if (result == false)
+                {
+                    return this.BadRequest(new { success = false, Message = $"No Addresses available For UserId : {UserId}!!" });
+                }
+
+                return this.Ok(new { success = true, Message = $"Order List of UserId : {UserId} fetched Sucessfully..." });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

@@ -23,8 +23,7 @@ namespace BusinessLayer.Services
                 return _orderRL.AddOrder(orderModel);
             }
             catch (Exception ex)
-            {
-
+            { 
                 throw ex;
             }
         }
@@ -37,10 +36,22 @@ namespace BusinessLayer.Services
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
 
+        }
+
+
+        public bool DeleteOrder(int UserId, int OrderId)
+        {
+            try
+            {
+                return _orderRL.DeleteOrder(UserId,OrderId);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
